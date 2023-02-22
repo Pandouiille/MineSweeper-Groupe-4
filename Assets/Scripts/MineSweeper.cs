@@ -182,9 +182,9 @@ public class MineSweeper : MonoBehaviour
 
             if (Grid[x,y] == 0)
             {
-                for (int i = x - 1 ; i < x + 1; i++)
+                for (int i = x - 1 ; i <= x + 1; i++)
                 {
-                    for (int j = y - 1; j < y + 1; j++)
+                    for (int j = y - 1; j <= y + 1; j++)
                     {
                         if (i >= 0 && i < GridSize && j >= 0 && j < GridSize)
                         {
