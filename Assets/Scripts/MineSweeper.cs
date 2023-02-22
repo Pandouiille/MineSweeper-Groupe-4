@@ -14,7 +14,7 @@ public class MineSweeper : MonoBehaviour
 
     private int[,] Grid;
     private bool[,] RevealedCases;
-    private bool GameOver = false;
+    private bool GameOver = true;
 
     // Start is called before the first frame update
     void Start()
@@ -127,13 +127,13 @@ public class MineSweeper : MonoBehaviour
             for (int j = 0; j < GridSize; j++)
             {
                 GameObject CaseObject = new GameObject("Case_" + i + "_" + j);
-                //CaseObject.transform.parent = transform;
                 CaseObject.transform.position = new Vector3(i, j, 0);
 
                 SpriteRenderer Render = CaseObject.AddComponent<SpriteRenderer>();
                 Render.sprite = HiddenCase;
 
                 BoxCollider2D boxCollid = CaseObject.AddComponent<BoxCollider2D>();
+
                 boxCollid.size = new Vector2(1, 1);
 
                 /*Case CaseSprite = CaseObject.AddComponent<Case>();
