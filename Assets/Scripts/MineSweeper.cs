@@ -19,9 +19,6 @@ public class MineSweeper : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Grid = new int[GridSize,GridSize];
-        RevealedCases= new bool[GridSize,GridSize];
-
         InitGrid();
         PlaceMines();
         CreateSpriteGrid();
@@ -104,13 +101,16 @@ public class MineSweeper : MonoBehaviour
                 if (Grid[i,j] != -1)
                 {
                     int NbMinesProxy = 0;
-                    for (int k = i -1; k <= i; k++)
+                    for (int k = i -1; k <= i + 1; k++)
                     {
                         for (int l = j - 1; l <= j + 1 ; l++)
                         {
-                            if (k >= 0 && k < GridSize && l >= 0 && k < GridSize)
+                            if (k >= 0 && k < GridSize && l >= 0 && l < GridSize)
                             {
-                                NbMinesProxy++;
+                                if (Grid[k, l] == -1)
+                                {
+                                    NbMinesProxy++;
+                                }
                             }
                         }
                     }
@@ -136,13 +136,13 @@ public class MineSweeper : MonoBehaviour
                 BoxCollider2D boxCollid = CaseObject.AddComponent<BoxCollider2D>();
                 boxCollid.size = new Vector2(1, 1);
 
-                Case CaseSprite = CaseObject.AddComponent<Case>();
+                /*Case CaseSprite = CaseObject.AddComponent<Case>();
                 CaseSprite.x = i;
                 CaseSprite.y = j;
                 CaseSprite.HiddenCase = HiddenCase;
                 CaseSprite.MineCase = MineCase;
                 CaseSprite.ProxyMinesCaseSprite = ProxyMinesCaseSprite;
-                CaseSprite.MineSweeper = this;
+                CaseSprite.MineSweeper = this;*/
             }
         }
     }
@@ -155,7 +155,7 @@ public class MineSweeper : MonoBehaviour
             {
                 if (RevealedCases[i,j])
                 {
-                    SpriteRenderer Render = transform.Find("Case(" + i + "," + j + ")").GetComponent<SpriteRenderer>();
+                    SpriteRenderer Render = GameObject.Find("Case_" + i + "_" + j).GetComponent<SpriteRenderer>();
                     if (Grid[i,j] == -1)
                     {
                         Render.sprite = MineCase;
@@ -164,6 +164,11 @@ public class MineSweeper : MonoBehaviour
                     {
                         Render.sprite = ProxyMinesCaseSprite[Grid[i,j]];
                     }
+                }
+                else
+                {
+                    SpriteRenderer Render = GameObject.Find("Case_" + i + "_" + j).GetComponent<SpriteRenderer>();
+                    Render.sprite = HiddenCase;
                 }
             }
         }
