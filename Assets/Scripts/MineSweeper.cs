@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class MineSweeper : MonoBehaviour
 {
-    public int GridSize = 10;
-    public int NbMines = 20;
 
-    public Sprite HiddenCase;
-    public Sprite MineCase;
+    [SerializeField] private int GridSize = 10;
+    [SerializeField] private int NbMines = 10;
 
-    public Sprite[] ProxyMinesCaseSprite;
+    [SerializeField] private Sprite HiddenCase;
+    [SerializeField] private Sprite MineCase;
+    [SerializeField] private Sprite FlagCase;
+
+    [SerializeField] private Sprite[] ProxyMinesCaseSprite;
 
     private int[,] Grid;
     private bool[,] RevealedCases;
+    private bool[,] CasesWithFlags;
     private bool GameOver = true;
 
     // Start is called before the first frame update
@@ -34,6 +37,7 @@ public class MineSweeper : MonoBehaviour
             PlaceMines();
             UpdateGrid();
         }
+
         if (!GameOver && Input.GetMouseButtonDown(0)) 
         {
             Vector3 MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -58,12 +62,35 @@ public class MineSweeper : MonoBehaviour
                 }
             }
         }
+
+        if (!GameOver && Input.GetMouseButtonDown(1))
+        {
+
+            Vector3 MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            int x = Mathf.RoundToInt(MousePos.x);
+            int y = Mathf.RoundToInt(MousePos.y);
+
+            if (x >= 0 && x < GridSize && y >= 0 && y < GridSize)
+            {
+                Debug.Log("Pressed primary button.");
+                PutFlagOnTile(x, y);
+                UpdateGrid();
+
+                if (CaseIsSafe())
+                {
+                    GameOver = true;
+                    DisplayMines();
+                    Debug.Log("GG");
+                }
+            }
+        }
     }
 
     private void InitGrid()
     {
         Grid = new int[GridSize,GridSize];
         RevealedCases= new bool[GridSize,GridSize];
+        CasesWithFlags = new bool[GridSize, GridSize];
 
         for (int i = 0; i < GridSize; i++)
         {
@@ -153,7 +180,12 @@ public class MineSweeper : MonoBehaviour
         {
             for (int j = 0; j < GridSize; j++)
             {
-                if (RevealedCases[i,j])
+                if (CasesWithFlags[i, j] && !GameOver)
+                {
+                    SpriteRenderer Render = GameObject.Find("Case_" + i + "_" + j).GetComponent<SpriteRenderer>();
+                    Render.sprite = FlagCase;
+                }
+                else if (RevealedCases[i,j])
                 {
                     SpriteRenderer Render = GameObject.Find("Case_" + i + "_" + j).GetComponent<SpriteRenderer>();
                     if (Grid[i,j] == -1)
@@ -162,7 +194,7 @@ public class MineSweeper : MonoBehaviour
                     }
                     else
                     {
-                        Render.sprite = ProxyMinesCaseSprite[Grid[i,j]];
+                        Render.sprite = ProxyMinesCaseSprite[Grid[i, j]];
                     }
                 }
                 else
@@ -224,5 +256,13 @@ public class MineSweeper : MonoBehaviour
             }
         }
         return true;
+    }
+
+    private void PutFlagOnTile(int x, int y)
+    {
+        if (!RevealedCases[x,y])
+        { 
+            CasesWithFlags[x, y] = !CasesWithFlags[x, y]; 
+        }        
     }
 }
