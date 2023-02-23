@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MineSweeper : MonoBehaviour
 {
+
     [SerializeField] private int GridSize = 10;
     [SerializeField] private int NbMines = 10;
 
