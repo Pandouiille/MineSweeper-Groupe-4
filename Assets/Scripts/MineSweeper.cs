@@ -5,7 +5,7 @@ using UnityEngine;
 public class MineSweeper : MonoBehaviour
 {
     public int GridSize = 10;
-    public int NbMines = 10;
+    public int NbMines = 20;
 
     public Sprite HiddenCase;
     public Sprite MineCase;
