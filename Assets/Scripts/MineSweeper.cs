@@ -4,23 +4,29 @@ using UnityEngine;
 
 public class MineSweeper : MonoBehaviour
 {
-    [SerializeField] private int GridSize = 10;
-    [SerializeField] private int NbMines = 10;
+    [SerializeField] private int _GridSize = 10;
+    [SerializeField] private int _NbMines = 10;
+    [SerializeField] private int _NbMinesLeft;
 
-    [SerializeField] private Sprite HiddenCase;
-    [SerializeField] private Sprite MineCase;
-    [SerializeField] private Sprite FlagCase;
+    [SerializeField] private Sprite _HiddenCase;
+    [SerializeField] private Sprite _MineCase;
+    [SerializeField] private Sprite _FlagCase;
 
-    [SerializeField] private Sprite[] ProxyMinesCaseSprite;
+    [SerializeField] private Sprite[] _ProxyMinesCaseSprite;
 
-    private int[,] Grid;
-    private bool[,] RevealedCases;
-    private bool[,] CasesWithFlags;
-    private bool GameOver = true;
+    [SerializeField] private AudioClip _audioClip;
+
+    private AudioSource _audio;
+
+    private int[,] _Grid;
+    private bool[,] _RevealedCases;
+    private bool[,] _CasesWithFlags;
+    private bool _GameOver = true;
 
     // Start is called before the first frame update
     void Start()
     {
+        _audio = GetComponent<AudioSource>();
         InitGrid();
         PlaceMines();
         CreateSpriteGrid();
@@ -29,55 +35,57 @@ public class MineSweeper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameOver && Input.GetMouseButtonDown(0))
+        if (_GameOver && Input.GetMouseButtonDown(0))
         {
-            GameOver = false;
+            _NbMinesLeft = _NbMines;
+            _GameOver = false;
             InitGrid();
             PlaceMines();
             UpdateGrid();
         }
 
-        if (!GameOver && Input.GetMouseButtonDown(0)) 
+        if (!_GameOver && Input.GetMouseButtonDown(0)) 
         {
             Vector3 MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             int x = Mathf.RoundToInt(MousePos.x);
             int y = Mathf.RoundToInt(MousePos.y);
 
-            if (x >= 0 && x < GridSize && y >= 0 && y < GridSize)
+            if (x >= 0 && x < _GridSize && y >= 0 && y < _GridSize && !_CasesWithFlags[x,y])
             {
                 RevealCase(x, y);
                 UpdateGrid();
 
-                if (Grid[x,y] == -1)
+                if (_Grid[x,y] == -1)
                 {
-                    GameOver = true;
+                    _GameOver = true;
                     DisplayMines();
+                    _audio.PlayOneShot(_audioClip, 1);
+                    Debug.Log("Boom");
                 }
                 else if (CaseIsSafe())
                 {
-                    GameOver = true;
+                    _GameOver = true;
                     DisplayMines();
                     Debug.Log("GG");
                 }
             }
         }
 
-        if (!GameOver && Input.GetMouseButtonDown(1))
+        if (!_GameOver && Input.GetMouseButtonDown(1))
         {
 
             Vector3 MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             int x = Mathf.RoundToInt(MousePos.x);
             int y = Mathf.RoundToInt(MousePos.y);
 
-            if (x >= 0 && x < GridSize && y >= 0 && y < GridSize)
+            if (x >= 0 && x < _GridSize && y >= 0 && y < _GridSize)
             {
-                Debug.Log("Pressed primary button.");
                 PutFlagOnTile(x, y);
                 UpdateGrid();
 
                 if (CaseIsSafe())
                 {
-                    GameOver = true;
+                    _GameOver = true;
                     DisplayMines();
                     Debug.Log("GG");
                 }
@@ -87,31 +95,33 @@ public class MineSweeper : MonoBehaviour
 
     private void InitGrid()
     {
-        Grid = new int[GridSize,GridSize];
-        RevealedCases= new bool[GridSize,GridSize];
-        CasesWithFlags = new bool[GridSize, GridSize];
+        _Grid = new int[_GridSize,_GridSize];
+        _RevealedCases= new bool[_GridSize,_GridSize];
+        _CasesWithFlags = new bool[_GridSize, _GridSize];
 
-        for (int i = 0; i < GridSize; i++)
+        for (int i = 0; i < _GridSize; i++)
         {
-            for (int j = 0; j < GridSize; j++)
+            for (int j = 0; j < _GridSize; j++)
             {
-                Grid[i, j] = 0;
-                RevealedCases[i, j] = false;
+                _Grid[i, j] = 0;
+                _RevealedCases[i, j] = false;
             }
         }
+        Camera.main.transform.position = new Vector3(_GridSize / 2 - .5f, _GridSize / 2 - .5f,  -1);
+        Camera.main.orthographicSize = _GridSize / 2;
     }
 
     private void PlaceMines()
     {
         int MinePlaced = 0;
-        while (MinePlaced < NbMines)
+        while (MinePlaced < _NbMines)
         {
-            int x = Random.Range(0,GridSize);
-            int y = Random.Range(0,GridSize);
+            int x = Random.Range(0,_GridSize);
+            int y = Random.Range(0,_GridSize);
 
-            if (Grid[x,y] != -1)
+            if (_Grid[x,y] != -1)
             {
-                Grid[x,y] = -1;
+                _Grid[x,y] = -1;
                 MinePlaced++;
             }
         }
@@ -120,27 +130,27 @@ public class MineSweeper : MonoBehaviour
 
     private void SetProxyMines()
     {
-        for (int i = 0; i < GridSize; i++)
+        for (int i = 0; i < _GridSize; i++)
         {
-            for (int j = 0; j < GridSize; j++)
+            for (int j = 0; j < _GridSize; j++)
             {
-                if (Grid[i,j] != -1)
+                if (_Grid[i,j] != -1)
                 {
                     int NbMinesProxy = 0;
                     for (int k = i -1; k <= i + 1; k++)
                     {
                         for (int l = j - 1; l <= j + 1 ; l++)
                         {
-                            if (k >= 0 && k < GridSize && l >= 0 && l < GridSize)
+                            if (k >= 0 && k < _GridSize && l >= 0 && l < _GridSize)
                             {
-                                if (Grid[k, l] == -1)
+                                if (_Grid[k, l] == -1)
                                 {
                                     NbMinesProxy++;
                                 }
                             }
                         }
                     }
-                    Grid[i, j] = NbMinesProxy;
+                    _Grid[i, j] = NbMinesProxy;
                 }
             }
         }
@@ -148,15 +158,15 @@ public class MineSweeper : MonoBehaviour
 
     private void CreateSpriteGrid()
     {
-        for (int i = 0; i < GridSize; i++)
+        for (int i = 0; i < _GridSize; i++)
         {
-            for (int j = 0; j < GridSize; j++)
+            for (int j = 0; j < _GridSize; j++)
             {
                 GameObject CaseObject = new GameObject("Case_" + i + "_" + j);
                 CaseObject.transform.position = new Vector3(i, j, 0);
 
                 SpriteRenderer Render = CaseObject.AddComponent<SpriteRenderer>();
-                Render.sprite = HiddenCase;
+                Render.sprite = _HiddenCase;
 
                 BoxCollider2D boxCollid = CaseObject.AddComponent<BoxCollider2D>();
 
@@ -175,31 +185,31 @@ public class MineSweeper : MonoBehaviour
 
     private void UpdateGrid()
     {
-        for (int i = 0; i < GridSize; i++)
+        for (int i = 0; i < _GridSize; i++)
         {
-            for (int j = 0; j < GridSize; j++)
+            for (int j = 0; j < _GridSize; j++)
             {
-                if (CasesWithFlags[i, j] && !GameOver)
+                if (_CasesWithFlags[i, j] && !_GameOver)
                 {
                     SpriteRenderer Render = GameObject.Find("Case_" + i + "_" + j).GetComponent<SpriteRenderer>();
-                    Render.sprite = FlagCase;
+                    Render.sprite = _FlagCase;
                 }
-                else if (RevealedCases[i,j])
+                else if (_RevealedCases[i,j])
                 {
                     SpriteRenderer Render = GameObject.Find("Case_" + i + "_" + j).GetComponent<SpriteRenderer>();
-                    if (Grid[i,j] == -1)
+                    if (_Grid[i,j] == -1)
                     {
-                        Render.sprite = MineCase;
+                        Render.sprite = _MineCase;
                     }
                     else
                     {
-                        Render.sprite = ProxyMinesCaseSprite[Grid[i, j]];
+                        Render.sprite = _ProxyMinesCaseSprite[_Grid[i, j]];
                     }
                 }
                 else
                 {
                     SpriteRenderer Render = GameObject.Find("Case_" + i + "_" + j).GetComponent<SpriteRenderer>();
-                    Render.sprite = HiddenCase;
+                    Render.sprite = _HiddenCase;
                 }
             }
         }
@@ -207,17 +217,17 @@ public class MineSweeper : MonoBehaviour
     
     private void RevealCase(int x, int y)
     {
-        if (!RevealedCases[x, y])
+        if (!_RevealedCases[x, y] && !_CasesWithFlags[x,y])
         {
-            RevealedCases[x, y] = true;
+            _RevealedCases[x, y] = true;
 
-            if (Grid[x,y] == 0)
+            if (_Grid[x,y] == 0)
             {
                 for (int i = x - 1 ; i <= x + 1; i++)
                 {
                     for (int j = y - 1; j <= y + 1; j++)
                     {
-                        if (i >= 0 && i < GridSize && j >= 0 && j < GridSize)
+                        if (i >= 0 && i < _GridSize && j >= 0 && j < _GridSize)
                         {
                             RevealCase(i, j);
                         }
@@ -229,13 +239,13 @@ public class MineSweeper : MonoBehaviour
 
     private void DisplayMines()
     {
-        for (int i = 0; i < GridSize; i++)
+        for (int i = 0; i < _GridSize; i++)
         {
-            for (int j = 0; j < GridSize; j++)
+            for (int j = 0; j < _GridSize; j++)
             {
-                if (Grid[i,j] == -1)
+                if (_Grid[i,j] == -1)
                 {
-                    RevealedCases[i,j] = true;
+                    _RevealedCases[i,j] = true;
                 }
             }
         }
@@ -244,11 +254,11 @@ public class MineSweeper : MonoBehaviour
 
     private bool CaseIsSafe()
     {
-        for (int i = 0; i < GridSize; i++)
+        for (int i = 0; i < _GridSize; i++)
         {
-            for (int j = 0; j < GridSize; j++)
+            for (int j = 0; j < _GridSize; j++)
             {
-                if (!RevealedCases[i,j] && Grid[i,j] != -1)
+                if (!_RevealedCases[i,j] && _Grid[i,j] != -1)
                 {
                     return false;
                 }
@@ -259,9 +269,18 @@ public class MineSweeper : MonoBehaviour
 
     private void PutFlagOnTile(int x, int y)
     {
-        if (!RevealedCases[x,y])
+        if (!_RevealedCases[x,y])
         { 
-            CasesWithFlags[x, y] = !CasesWithFlags[x, y]; 
-        }        
+            _CasesWithFlags[x, y] = !_CasesWithFlags[x, y];
+            if (_CasesWithFlags[x, y])
+            {
+                --_NbMinesLeft;
+            }
+            else
+            {
+                ++_NbMinesLeft;
+            }
+        }
+        Debug.Log(_NbMinesLeft);
     }
 }
