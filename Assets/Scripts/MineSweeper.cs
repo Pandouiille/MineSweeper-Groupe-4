@@ -22,6 +22,7 @@ public class MineSweeper : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Screen.fullScreen = !Screen.fullScreen;
         InitGrid();
         PlaceMines();
         CreateSpriteGrid();
@@ -100,6 +101,9 @@ public class MineSweeper : MonoBehaviour
                 RevealedCases[i, j] = false;
             }
         }
+
+        Camera.main.transform.position = new Vector3(GridSize / 2 - 0.5f, GridSize / 2 - 0.5f, -1);
+        Camera.main.orthographicSize = GridSize / 2;
     }
 
     private void PlaceMines()
