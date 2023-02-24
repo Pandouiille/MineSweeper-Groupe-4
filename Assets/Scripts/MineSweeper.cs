@@ -41,6 +41,7 @@ public class MineSweeper : MonoBehaviour
         if (!GameOver && Input.GetMouseButtonDown(0)) 
         {
             Vector3 MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
             int x = Mathf.RoundToInt(MousePos.x);
             int y = Mathf.RoundToInt(MousePos.y);
 
