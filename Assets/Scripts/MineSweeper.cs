@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class MineSweeper : MonoBehaviour
 {
-    [SerializeField] private int _GridSize = 10;
-    [SerializeField] private int _NbMines = 10;
+    [SerializeField] private int _GridSize;
+    [SerializeField] private int _NbMines;
     [SerializeField] private int _NbMinesLeft;
 
     [SerializeField] private Sprite _HiddenCase;
@@ -26,7 +26,11 @@ public class MineSweeper : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _GridSize = OptionGame._sizeGrid ;
+        _NbMines = OptionGame._nbrMines;
+        _NbMinesLeft = _NbMines;
         _audio = GetComponent<AudioSource>();
+        Debug.Log($"{_GridSize} / {_NbMines} / {_NbMinesLeft}");
         InitGrid();
         PlaceMines();
         CreateSpriteGrid();
@@ -107,8 +111,8 @@ public class MineSweeper : MonoBehaviour
                 _RevealedCases[i, j] = false;
             }
         }
-        Camera.main.transform.position = new Vector3(_GridSize / 2 - .5f, _GridSize / 2 - .5f,  -1);
-        Camera.main.orthographicSize = _GridSize / 2;
+        Camera.main.transform.position = new Vector3((float)_GridSize / 2 - .5f, (float)_GridSize / 2 - .5f,  -1);
+        Camera.main.orthographicSize = (float)_GridSize / 2;
     }
 
     private void PlaceMines()
