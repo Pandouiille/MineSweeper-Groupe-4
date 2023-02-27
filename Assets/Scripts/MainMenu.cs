@@ -4,9 +4,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 using UnityEditor;
+using Mono.Cecil;
 
 public class MainMenu : MonoBehaviour
 {
+    private GameObject instance;
 
     // Start is called before the first frame update
     public void LoadScene(string SceneName)
@@ -28,4 +30,18 @@ public class MainMenu : MonoBehaviour
     {
             Screen.fullScreen = isFullScreen;
     }
+
+/*
+    public void unloadGameObject()
+    {
+        Destroy(instance);
+        Resources.UnloadUnusedAssets();
+    }
+
+    public void loadGameObject()
+    {
+        instance = (GameObject)Instantiate(Resources.Load<GameObject>("Assets/SettingWindow.prefab"));
+    }
+*/
+
 }
