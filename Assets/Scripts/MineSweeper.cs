@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MineSweeper : MonoBehaviour
 {
-
     [SerializeField] private int GridSize = 10;
     [SerializeField] private int NbMines = 10;
 
@@ -18,6 +17,8 @@ public class MineSweeper : MonoBehaviour
     private bool[,] RevealedCases;
     private bool[,] CasesWithFlags;
     private bool GameOver = true;
+
+    Pause pause;
 
     // Start is called before the first frame update
     void Start()
@@ -67,24 +68,26 @@ public class MineSweeper : MonoBehaviour
 
         if (!GameOver && Input.GetMouseButtonDown(1))
         {
-
-            Vector3 MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            int x = Mathf.RoundToInt(MousePos.x);
-            int y = Mathf.RoundToInt(MousePos.y);
-
-            if (x >= 0 && x < GridSize && y >= 0 && y < GridSize)
+            if (!pause)
             {
-                Debug.Log("Pressed primary button.");
-                PutFlagOnTile(x, y);
-                UpdateGrid();
+                Vector3 MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                int x = Mathf.RoundToInt(MousePos.x);
+                int y = Mathf.RoundToInt(MousePos.y);
 
-                if (CaseIsSafe())
+                if (x >= 0 && x < GridSize && y >= 0 && y < GridSize)
                 {
-                    GameOver = true;
-                    DisplayMines();
-                    Debug.Log("GG");
+                    Debug.Log("Pressed primary button.");
+                    PutFlagOnTile(x, y);
+                    UpdateGrid();
+
+                    if (CaseIsSafe())
+                    {
+                        GameOver = true;
+                        DisplayMines();
+                        Debug.Log("GG");
+                    }
                 }
-            }
+            }  
         }
     }
 
