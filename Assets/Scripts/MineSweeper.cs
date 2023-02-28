@@ -27,10 +27,10 @@ public class MineSweeper : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        /*        _GridSize = OptionGame._sizeGrid ;
-                _NbMines = OptionGame._nbrMines;
-                _NbMinesLeft = _NbMines;
-        */
+        _GridSize = OptionGame._sizeGrid ;
+        _NbMines = OptionGame._nbrMines;
+        _NbMinesLeft = _NbMines;
+        
         _audio = GetComponent<AudioSource>();
         Debug.Log($"{_GridSize} / {_NbMines} / {_NbMinesLeft}");
         InitGrid();
@@ -45,6 +45,7 @@ public class MineSweeper : MonoBehaviour
         {
             return;
         }
+
         if (_GameOver && Input.GetMouseButtonDown(0))
         {
             _NbMinesLeft = _NbMines;
@@ -91,23 +92,17 @@ public class MineSweeper : MonoBehaviour
 
             if (x >= 0 && x < _GridSize && y >= 0 && y < _GridSize)
             {
+                Debug.Log("Pressed primary button.");
                 PutFlagOnTile(x, y);
                 UpdateGrid();
 
-                if (x >= 0 && x < _GridSize && y >= 0 && y < _GridSize)
+                if (CaseIsSafe())
                 {
-                    Debug.Log("Pressed primary button.");
-                    PutFlagOnTile(x, y);
-                    UpdateGrid();
-
-                    if (CaseIsSafe())
-                    {
-                        _GameOver = true;
-                        DisplayMines();
-                        Debug.Log("GG");
-                    }
+                    _GameOver = true;
+                    DisplayMines();
+                    Debug.Log("GG");
                 }
-            }  
+            }
         }
     }
 

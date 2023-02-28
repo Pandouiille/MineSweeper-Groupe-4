@@ -18,6 +18,6 @@ public class SetOptionGame : MonoBehaviour
     public void Launch()
     {
         Debug.Log("Launch");
-        SceneManager.LoadScene("MineSweeper");
+        SceneManager.LoadScene("GameScene");
     }
 }
