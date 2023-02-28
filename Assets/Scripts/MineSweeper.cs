@@ -22,10 +22,12 @@ public class MineSweeper : MonoBehaviour
     private bool[,] _RevealedCases;
     private bool[,] _CasesWithFlags;
     private bool _GameOver = true;
+    private bool _isPaused = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        Screen.fullScreen = !Screen.fullScreen;
         _GridSize = OptionGame._sizeGrid ;
         _NbMines = OptionGame._nbrMines;
         _NbMinesLeft = _NbMines;
@@ -39,6 +41,10 @@ public class MineSweeper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_isPaused == true)
+        {
+            return;
+        }
         if (_GameOver && Input.GetMouseButtonDown(0))
         {
             _NbMinesLeft = _NbMines;
@@ -88,13 +94,20 @@ public class MineSweeper : MonoBehaviour
                 PutFlagOnTile(x, y);
                 UpdateGrid();
 
-                if (CaseIsSafe())
+                if (x >= 0 && x < _GridSize && y >= 0 && y < _GridSize)
                 {
-                    _GameOver = true;
-                    DisplayMines();
-                    Debug.Log("GG");
+                    Debug.Log("Pressed primary button.");
+                    PutFlagOnTile(x, y);
+                    UpdateGrid();
+
+                    if (CaseIsSafe())
+                    {
+                        _GameOver = true;
+                        DisplayMines();
+                        Debug.Log("GG");
+                    }
                 }
-            }
+            }  
         }
     }
 
@@ -286,6 +299,11 @@ public class MineSweeper : MonoBehaviour
                 ++_NbMinesLeft;
             }
         }
-        Debug.Log(_NbMinesLeft);
+        Debug.Log(_NbMinesLeft);     
+    }
+
+    public void SetPause(bool pause)
+    {
+        _isPaused = pause;
     }
 }
