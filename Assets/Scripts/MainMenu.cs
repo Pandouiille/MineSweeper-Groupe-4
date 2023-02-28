@@ -30,18 +30,4 @@ public class MainMenu : MonoBehaviour
     {
             Screen.fullScreen = isFullScreen;
     }
-
-/*
-    public void unloadGameObject()
-    {
-        Destroy(instance);
-        Resources.UnloadUnusedAssets();
-    }
-
-    public void loadGameObject()
-    {
-        instance = (GameObject)Instantiate(Resources.Load<GameObject>("Assets/SettingWindow.prefab"));
-    }
-*/
-
 }
