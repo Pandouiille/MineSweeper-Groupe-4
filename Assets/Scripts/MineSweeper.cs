@@ -91,7 +91,7 @@ public class MineSweeper : MonoBehaviour
                 PutFlagOnTile(x, y);
                 UpdateGrid();
 
-                if (x >= 0 && x < GridSize && y >= 0 && y < GridSize)
+                if (x >= 0 && x < _GridSize && y >= 0 && y < _GridSize)
                 {
                     Debug.Log("Pressed primary button.");
                     PutFlagOnTile(x, y);
@@ -99,7 +99,7 @@ public class MineSweeper : MonoBehaviour
 
                     if (CaseIsSafe())
                     {
-                        GameOver = true;
+                        _GameOver = true;
                         DisplayMines();
                         Debug.Log("GG");
                     }
