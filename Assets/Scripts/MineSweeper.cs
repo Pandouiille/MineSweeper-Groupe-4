@@ -22,8 +22,7 @@ public class MineSweeper : MonoBehaviour
     private bool[,] _RevealedCases;
     private bool[,] _CasesWithFlags;
     private bool _GameOver = true;
-
-    Pause pause;
+    private bool _isPaused = false;
 
     // Start is called before the first frame update
     void Start()
@@ -46,7 +45,7 @@ public class MineSweeper : MonoBehaviour
         {
             return;
         }
-        if (GameOver && Input.GetMouseButtonDown(0))
+        if (_GameOver && Input.GetMouseButtonDown(0))
         {
             _NbMinesLeft = _NbMines;
             _GameOver = false;
@@ -300,11 +299,7 @@ public class MineSweeper : MonoBehaviour
                 ++_NbMinesLeft;
             }
         }
-        Debug.Log(_NbMinesLeft);
-        if (!RevealedCases[x,y])
-        { 
-            CasesWithFlags[x, y] = !CasesWithFlags[x, y]; 
-        }        
+        Debug.Log(_NbMinesLeft);     
     }
 
     public void SetPause(bool pause)

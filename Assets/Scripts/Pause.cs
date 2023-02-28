@@ -29,6 +29,11 @@ public class Pause : MonoBehaviour
         mine.SetPause(false);
     }
 
+    public void Quit()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
     public void Reset()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
