@@ -26,9 +26,10 @@ public class MineSweeper : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _GridSize = OptionGame._sizeGrid ;
-        _NbMines = OptionGame._nbrMines;
-        _NbMinesLeft = _NbMines;
+        /*        _GridSize = OptionGame._sizeGrid ;
+                _NbMines = OptionGame._nbrMines;
+                _NbMinesLeft = _NbMines;
+        */
         _audio = GetComponent<AudioSource>();
         Debug.Log($"{_GridSize} / {_NbMines} / {_NbMinesLeft}");
         InitGrid();
