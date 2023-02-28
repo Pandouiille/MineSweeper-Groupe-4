@@ -152,8 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 521c1e75a92ed35418dee7d747a34af5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GridSize: 50
-  NbMines: 250
+  GridSize: 10
+  NbMines: 20
   HiddenCase: {fileID: 21300000, guid: 5e421f87e19574d459fb4dca91be255e, type: 3}
   MineCase: {fileID: 21300000, guid: 10ae72a57ffbbaa418e95924251c672e, type: 3}
   FlagCase: {fileID: 21300000, guid: 0988d6f962d197e41ab02052db5041cc, type: 3}
