@@ -6,21 +6,27 @@ using UnityEngine.SceneManagement;
 
 public class Pause : MonoBehaviour
 {
-    [SerializeField] GameObject pauseMenu;
-    bool pause = false;
+    [SerializeField] GameObject _pauseMenu;
+    [SerializeField] GameObject _game;
+    MineSweeper mine;
+
+    private void Start()
+    {
+        mine = _game.GetComponent<MineSweeper>();
+    }
 
     public void SetPause()
     {
-        pauseMenu.SetActive(true);
+        _pauseMenu.SetActive(true);
         Time.timeScale = 0f;
-        pause = true;
+        mine.SetPause(true);
     }
 
     public void Resume()
     {
-        pauseMenu.SetActive(false);
+        _pauseMenu.SetActive(false);
         Time.timeScale = 1f;
-        pause = false;
+        mine.SetPause(false);
     }
 
     public void Reset()

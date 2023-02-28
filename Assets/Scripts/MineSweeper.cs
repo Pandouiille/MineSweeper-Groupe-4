@@ -42,7 +42,11 @@ public class MineSweeper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_GameOver && Input.GetMouseButtonDown(0))
+        if (_isPaused == true)
+        {
+            return;
+        }
+        if (GameOver && Input.GetMouseButtonDown(0))
         {
             _NbMinesLeft = _NbMines;
             _GameOver = false;
@@ -297,5 +301,14 @@ public class MineSweeper : MonoBehaviour
             }
         }
         Debug.Log(_NbMinesLeft);
+        if (!RevealedCases[x,y])
+        { 
+            CasesWithFlags[x, y] = !CasesWithFlags[x, y]; 
+        }        
+    }
+
+    public void SetPause(bool pause)
+    {
+        _isPaused = pause;
     }
 }
