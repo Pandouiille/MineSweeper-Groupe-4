@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MineSweeper : MonoBehaviour
 {
@@ -305,5 +306,10 @@ public class MineSweeper : MonoBehaviour
     public void SetPause(bool pause)
     {
         _isPaused = pause;
+    }
+
+    public int GetNbMinesLeft()
+    {
+        return _NbMinesLeft;
     }
 }
