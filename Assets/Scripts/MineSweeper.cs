@@ -27,11 +27,12 @@ public class MineSweeper : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _GridSize = OptionGame.SizeGrid ;
-        _NbMines = OptionGame.NbrMines;
+        _GridSize = OptionGame._sizeGrid ;
+        _NbMines = OptionGame._nbrMines;
         _NbMinesLeft = _NbMines;
         
         _audio = GetComponent<AudioSource>();
+        Debug.Log($"{_GridSize} / {_NbMines} / {_NbMinesLeft}");
         InitGrid();
         PlaceMines();
         CreateSpriteGrid();
@@ -91,6 +92,7 @@ public class MineSweeper : MonoBehaviour
 
             if (x >= 0 && x < _GridSize && y >= 0 && y < _GridSize)
             {
+                Debug.Log("Pressed primary button.");
                 PutFlagOnTile(x, y);
                 UpdateGrid();
 
@@ -182,6 +184,14 @@ public class MineSweeper : MonoBehaviour
                 BoxCollider2D boxCollid = CaseObject.AddComponent<BoxCollider2D>();
 
                 boxCollid.size = new Vector2(1, 1);
+
+                /*Case CaseSprite = CaseObject.AddComponent<Case>();
+                CaseSprite.x = i;
+                CaseSprite.y = j;
+                CaseSprite.HiddenCase = HiddenCase;
+                CaseSprite.MineCase = MineCase;
+                CaseSprite.ProxyMinesCaseSprite = ProxyMinesCaseSprite;
+                CaseSprite.MineSweeper = this;*/
             }
         }
     }
