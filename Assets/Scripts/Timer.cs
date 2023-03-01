@@ -5,20 +5,20 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    public float timeValue = 120;
+    public float _timeValue = 120;
     public Text timerText;
 
     void Update()
     {
-        if (timeValue > 0)
+        if (_timeValue > 0)
         {
-            timeValue -= Time.deltaTime;
+            _timeValue -= Time.deltaTime;
         }
         else
         {
-            timeValue += 120;
+            _timeValue += 120;
         }
-        DisplayTime(timeValue);
+        DisplayTime(_timeValue);
     }
 
     void DisplayTime(float TimeToDisplay)
