@@ -291,4 +291,9 @@ public class MineSweeper : MonoBehaviour
     {
         _isPaused = pause;
     }
+    
+    public int GetNbMinesLeft()
+    {
+        return _NbMinesLeft;
+    }
 }
