@@ -4,18 +4,13 @@ using UnityEngine;
 
 static public class OptionGame
 {
-    public static int _nbrMines = 1;
-    public static int _sizeGrid = 2;
+    private static int _nbrMines = 1;
+    private static int _sizeGrid = 2;
+    private static bool _isTimer = false;
 
-    static public void GetNbrMines(int nbrMines)
-    {
-        _nbrMines = nbrMines;
-        Debug.Log(_nbrMines);
-    }
+    public static int NbrMines { get => _nbrMines; set =>_nbrMines = value; }
 
-    static public void GetSizeGrid(int sizeGrid)
-    {
-        _sizeGrid = sizeGrid;
-        Debug.Log(_sizeGrid);
-    }
+    public static int SizeGrid { get => _sizeGrid; set => _sizeGrid = value; }
+
+    public static bool IsTimer { get => _isTimer; set => _isTimer = value; }
 }
