@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MineSweeper : MonoBehaviour
 {
@@ -26,11 +27,10 @@ public class MineSweeper : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
+    {        
         _GridSize = OptionGame.GridSize;
         _NbMines = OptionGame.NbrMines;
         _NbMinesLeft = _NbMines;
-        
         _audio = GetComponent<AudioSource>();
         Debug.Log($"{_GridSize} / {_NbMines} / {_NbMinesLeft}");
         InitGrid();
@@ -45,7 +45,6 @@ public class MineSweeper : MonoBehaviour
         {
             return;
         }
-
         if (_GameOver && Input.GetMouseButtonDown(0))
         {
             _NbMinesLeft = _NbMines;
@@ -95,13 +94,20 @@ public class MineSweeper : MonoBehaviour
                 PutFlagOnTile(x, y);
                 UpdateGrid();
 
-                if (CaseIsSafe())
+                if (x >= 0 && x < _GridSize && y >= 0 && y < _GridSize)
                 {
-                    _GameOver = true;
-                    DisplayMines();
-                    Debug.Log("GG");
+                    Debug.Log("Pressed primary button.");
+                    PutFlagOnTile(x, y);
+                    UpdateGrid();
+
+                    if (CaseIsSafe())
+                    {
+                        _GameOver = true;
+                        DisplayMines();
+                        Debug.Log("GG");
+                    }
                 }
-            }
+            }  
         }
     }
 
@@ -183,6 +189,14 @@ public class MineSweeper : MonoBehaviour
                 BoxCollider2D boxCollid = CaseObject.AddComponent<BoxCollider2D>();
 
                 boxCollid.size = new Vector2(1, 1);
+
+                /*Case CaseSprite = CaseObject.AddComponent<Case>();
+                CaseSprite.x = i;
+                CaseSprite.y = j;
+                CaseSprite.HiddenCase = HiddenCase;
+                CaseSprite.MineCase = MineCase;
+                CaseSprite.ProxyMinesCaseSprite = ProxyMinesCaseSprite;
+                CaseSprite.MineSweeper = this;*/
             }
         }
     }
@@ -284,14 +298,15 @@ public class MineSweeper : MonoBehaviour
             {
                 ++_NbMinesLeft;
             }
-        }  
+        }
+        Debug.Log(_NbMinesLeft);     
     }
 
     public void SetPause(bool pause)
     {
         _isPaused = pause;
     }
-    
+
     public int GetNbMinesLeft()
     {
         return _NbMinesLeft;
