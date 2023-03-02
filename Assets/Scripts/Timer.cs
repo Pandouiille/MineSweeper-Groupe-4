@@ -8,6 +8,15 @@ public class Timer : MonoBehaviour
     public float _timeValue = 120;
     public Text timerText;
 
+    private void Start()
+    {
+        if (OptionGame.IsTimer)
+        {
+            Destroy(gameObject);
+            Debug.Log(OptionGame.IsTimer);
+        }
+    }
+
     void Update()
     {
         if (_timeValue > 0)
@@ -36,3 +45,5 @@ public class Timer : MonoBehaviour
 
     /*UI*/
 }
+
+//a
