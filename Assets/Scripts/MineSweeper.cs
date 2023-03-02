@@ -40,6 +40,7 @@ public class MineSweeper : MonoBehaviour
         InitGrid();
         PlaceMines();
         CreateSpriteGrid();
+
     }
 
     // Update is called once per frame
