@@ -594,7 +594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2785d4e0b1d14e419388633575a2eff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeValue: 120
+  timeValue: 120
   timerText: {fileID: 1021397323}
 --- !u!114 &1021397323
 MonoBehaviour:
@@ -1315,7 +1315,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1968661786}
   - component: {fileID: 1968661785}
-  - component: {fileID: 1968661784}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1323,14 +1322,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1968661784
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1968661783}
-  m_Enabled: 1
 --- !u!20 &1968661785
 Camera:
   m_ObjectHideFlags: 0
