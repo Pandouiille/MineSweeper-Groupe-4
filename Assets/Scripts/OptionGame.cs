@@ -1,8 +1,3 @@
-
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 static public class OptionGame
 {
     private static int _nbrMines = 1;

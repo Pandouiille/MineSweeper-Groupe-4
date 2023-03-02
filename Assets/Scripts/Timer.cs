@@ -10,15 +10,18 @@ public class Timer : MonoBehaviour
 
     void Update()
     {
-        if (timeValue > 0)
+        if (OptionGame.IsTimer)
         {
-            timeValue -= Time.deltaTime;
+            if (timeValue > 0)
+            {
+                timeValue -= Time.deltaTime;
+            }
+            else
+            {
+                timeValue += 120;
+            }
+            DisplayTime(timeValue);
         }
-        else
-        {
-            timeValue += 120;
-        }
-        DisplayTime(timeValue);
     }
 
     void DisplayTime(float TimeToDisplay)
