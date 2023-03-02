@@ -1,23 +1,42 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SetOptionGame : MonoBehaviour 
-{ 
-    public void PassNbrMine(float nbr)
-    {
-        OptionGame.GetNbrMines((int)nbr);
-    }
+{
+
+    [SerializeField] private TextMeshProUGUI _gridSizeDisplay;
+    [SerializeField] private TextMeshProUGUI _nbrMinesDisplay;
 
     public void PassGridSize(float size)
     {
-        OptionGame.GetSizeGrid((int)size);
+        OptionGame.GridSize = (int)size;
+        DisplayGridSize((int)size);
+    }
+
+    public void PassNbrMine(float nbr)
+    {
+        OptionGame.NbrMines = (int)nbr;
+        DisplayNbrMines((int)nbr);
+    }
+
+    public void PassIsTimer(bool isTimer)
+    {
+        OptionGame.IsTimer = isTimer;
+    }
+
+    public void DisplayGridSize(int gridSize)
+    {
+        _gridSizeDisplay.text = gridSize.ToString();
+    }
+
+    public void DisplayNbrMines(int nbr)
+    {
+        _nbrMinesDisplay.text = nbr.ToString();
     }
 
     public void Launch()
     {
-        Debug.Log("Launch");
         SceneManager.LoadScene("GameScene");
     }
 }
