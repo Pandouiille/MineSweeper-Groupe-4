@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MineSweeper : MonoBehaviour
 {
@@ -29,11 +30,10 @@ public class MineSweeper : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
+    {        
         _GridSize = OptionGame.GridSize;
         _NbMines = OptionGame.NbrMines;
         _NbMinesLeft = _NbMines;
-        
         _audio = GetComponent<AudioSource>();
         Debug.Log($"{_GridSize} / {_NbMines} / {_NbMinesLeft}");
         InitGrid();
@@ -48,7 +48,6 @@ public class MineSweeper : MonoBehaviour
         {
             return;
         }
-
         if (_GameOver && Input.GetMouseButtonDown(0))
         {
             _NbMinesLeft = _NbMines;
@@ -106,7 +105,7 @@ public class MineSweeper : MonoBehaviour
                     SetPause(true);
                     _WinMenu.SetActive(true);
                 }
-            }
+            }  
         }
     }
 
@@ -188,6 +187,14 @@ public class MineSweeper : MonoBehaviour
                 BoxCollider2D boxCollid = CaseObject.AddComponent<BoxCollider2D>();
 
                 boxCollid.size = new Vector2(1, 1);
+
+                /*Case CaseSprite = CaseObject.AddComponent<Case>();
+                CaseSprite.x = i;
+                CaseSprite.y = j;
+                CaseSprite.HiddenCase = HiddenCase;
+                CaseSprite.MineCase = MineCase;
+                CaseSprite.ProxyMinesCaseSprite = ProxyMinesCaseSprite;
+                CaseSprite.MineSweeper = this;*/
             }
         }
     }
@@ -296,7 +303,7 @@ public class MineSweeper : MonoBehaviour
     {
         _isPaused = pause;
     }
-    
+
     public int GetNbMinesLeft()
     {
         return _NbMinesLeft;

@@ -5,29 +5,20 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    public float _timeValue = 120;
+    public float timeValue = 120;
     public Text timerText;
-
-    private void Start()
-    {
-        if (OptionGame.IsTimer)
-        {
-            Destroy(gameObject);
-            Debug.Log(OptionGame.IsTimer);
-        }
-    }
 
     void Update()
     {
-        if (_timeValue > 0)
+        if (timeValue > 0)
         {
-            _timeValue -= Time.deltaTime;
+            timeValue -= Time.deltaTime;
         }
         else
         {
-            _timeValue += 120;
+            timeValue += 120;
         }
-        DisplayTime(_timeValue);
+        DisplayTime(timeValue);
     }
 
     void DisplayTime(float TimeToDisplay)
@@ -45,5 +36,3 @@ public class Timer : MonoBehaviour
 
     /*UI*/
 }
-
-//a
