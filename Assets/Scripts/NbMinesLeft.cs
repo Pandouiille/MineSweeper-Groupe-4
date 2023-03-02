@@ -5,25 +5,20 @@ using UnityEngine.UI;
 
 public class NbMinesLeft : MonoBehaviour
 {
-    [SerializeField] GameObject _game;
+    public Text NbMinesLeftText;
 
+    [SerializeField] GameObject _game;
     MineSweeper mine;
 
-    public Text nbMinesLeft;
-
-    private void Start()
+    // Start is called before the first frame update
+    void Start()
     {
         mine = _game.GetComponent<MineSweeper>();
-        DisplayNbMinesLeft();
     }
 
-    private void Update()
+    // Update is called once per frame
+    void Update()
     {
-        DisplayNbMinesLeft();
-    }
-
-    void DisplayNbMinesLeft()
-    {
-        nbMinesLeft.text = mine.GetNbMinesLeft().ToString();
+        NbMinesLeftText.text = mine.GetNbMinesLeft().ToString();
     }
 }
