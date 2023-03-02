@@ -9,6 +9,13 @@ public class SetOptionGame : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _gridSizeDisplay;
     [SerializeField] private TextMeshProUGUI _nbrMinesDisplay;
 
+    private void Start()
+    {
+        OptionGame.NbrMines = 1;
+        OptionGame.GridSize = 2;
+        OptionGame.IsTimer = false;
+    }
+
     public void PassGridSize(float size)
     {
         OptionGame.GridSize = (int)size;

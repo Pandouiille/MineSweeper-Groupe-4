@@ -31,6 +31,9 @@ public class Pause : MonoBehaviour
 
     public void Quit()
     {
+        OptionGame.NbrMines = 1;
+        OptionGame.GridSize = 2;
+        OptionGame.IsTimer = false;
         SceneManager.LoadScene("MainMenu");
         Time.timeScale = 1f;
     }

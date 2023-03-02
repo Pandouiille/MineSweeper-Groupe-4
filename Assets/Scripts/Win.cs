@@ -17,6 +17,9 @@ public class Win : MonoBehaviour
     public void Quit()
     {
         _GameOverMenu.SetActive(false);
+        OptionGame.NbrMines = 1;
+        OptionGame.GridSize = 2;
+        OptionGame.IsTimer = false;
         SceneManager.LoadScene("MainMenu");
 
         mine.SetPause(false);
