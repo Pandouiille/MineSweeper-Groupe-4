@@ -83,7 +83,7 @@ public class MineSweeper : MonoBehaviour
                     _GameOver = true;
                     DisplayMines();
                     SetPause(true);
-                    _GameOverMenu.SetActive(true);
+                    _WinMenu.SetActive(true);
                 }
             }
         }
@@ -104,7 +104,7 @@ public class MineSweeper : MonoBehaviour
                     _GameOver = true;
                     DisplayMines();
                     SetPause(true);
-                    _GameOverMenu.SetActive(true);
+                    _WinMenu.SetActive(true);
                 }
             }
         }
