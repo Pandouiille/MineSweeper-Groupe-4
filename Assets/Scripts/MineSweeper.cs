@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
+using Random = UnityEngine.Random;
 
 public class MineSweeper : MonoBehaviour
 {
@@ -32,9 +32,11 @@ public class MineSweeper : MonoBehaviour
     private float clicktime = 0;
     private float clickdelay = 0.35f;
 
+    int _i, _j;
+
     // Start is called before the first frame update
     void Start()
-    {        
+    {
         _GridSize = OptionGame.GridSize;
         _NbMines = OptionGame.NbrMines;
         _NbMinesLeft = _NbMines;
@@ -76,36 +78,50 @@ public class MineSweeper : MonoBehaviour
                 {
                     for (int j = y - 1; j <= y + 1; j++)
                     {
-                        if (_CasesWithFlags[i,j])
+                        try
                         {
-                            flagCounter += 1;
+                            if (_CasesWithFlags[i, j])
+                            {
+                                flagCounter += 1;
+                            }
+                        }
+                        catch (IndexOutOfRangeException) when (i < 0 || j < 0 || i >= _GridSize || j >= _GridSize)
+                        {
+                            Debug.Log(i + " / " + j);
                         }
                     }
                 }
 
-                if (flagCounter == _Grid[x,y])
+                if (flagCounter == _Grid[x, y])
                 {
                     for (int i = x - 1; i <= x + 1; i++)
                     {
                         for (int j = y - 1; j <= y + 1; j++)
                         {
-                            RevealCase(i, j);
-                            if (_Grid[i, j] == -1 && !_CasesWithFlags[i,j])
+                            try
                             {
-                                _GameOver = true;
-                                DisplayMines();
-                                _audio.PlayOneShot(_audioClip, 1);
-                                Debug.Log("Boom");
+                                RevealCase(i, j);
+                                if (_Grid[i, j] == -1 && !_CasesWithFlags[i, j])
+                                {
+                                    _GameOver = true;
+                                    DisplayMines();
+                                    _audio.PlayOneShot(_audioClip, 1);
+                                    Debug.Log("Boom");
+                                }
+                                else if (CaseIsSafe())
+                                {
+                                    _GameOver = true;
+                                    DisplayMines();
+                                    Debug.Log("GG");
+                                }
                             }
-                            else if (CaseIsSafe())
+                            catch (IndexOutOfRangeException) when (i < 0 || j < 0 || i >= _GridSize || j >= _GridSize)
                             {
-                                _GameOver = true;
-                                DisplayMines();
-                                Debug.Log("GG");
+                                Debug.Log(i + " / " + j);
                             }
+
                         }
                     }
-
                     UpdateGrid();
                 }
             }
