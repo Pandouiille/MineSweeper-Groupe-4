@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using System.Collections;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
@@ -13,7 +13,6 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
     private int musicIndex = 0;
     private string sceneName;
-
 
     private void Awake()
     {
@@ -37,10 +36,21 @@ public class AudioManager : MonoBehaviour
         {
             audioSource.clip = otherClip[1];
             StartBGMusic(false);
-            //audioSource.clip = otherClip[2];
+            
+        }
+    }
+    public void StartBGMusic(bool aRestart)
+    {
+        if (!audioSource.isPlaying || aRestart)
+        {
+            audioSource.Play();
         }
     }
 
+    public void StopMusic()
+    {
+        audioSource.Stop();
+    }
     public AudioSource PlayClipAt(AudioClip clip, Vector3 pos)
     {
         GameObject tempGO = new GameObject("TempAudio");
@@ -52,23 +62,6 @@ public class AudioManager : MonoBehaviour
         Destroy(tempGO, clip.length);
         return audioSource;
     }
-
-    public void StartBGMusic(bool aRestart)
-    {
-        if (!audioSource.isPlaying || aRestart)
-        {
-            audioSource.Play();
-            audioSource.Stop();
-        }
-    }
-
-    public void StartBackgroundMusic()
-    {
-        audioSource.Stop();
-    }
-
-
-
     void MakeSingleton()
     {
         if (instance != null)

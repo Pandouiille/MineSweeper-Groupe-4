@@ -35,7 +35,7 @@ public class MineSweeper : MonoBehaviour
         _NbMines = OptionGame.NbrMines;
         _NbMinesLeft = _NbMines;
         _audio = GetComponent<AudioSource>();
-        Debug.Log($"{_GridSize} / {_NbMines} / {_NbMinesLeft}");
+        //Debug.Log($"{_GridSize} / {_NbMines} / {_NbMinesLeft}");
         InitGrid();
         PlaceMines();
         CreateSpriteGrid();
@@ -187,14 +187,6 @@ public class MineSweeper : MonoBehaviour
                 BoxCollider2D boxCollid = CaseObject.AddComponent<BoxCollider2D>();
 
                 boxCollid.size = new Vector2(1, 1);
-
-                /*Case CaseSprite = CaseObject.AddComponent<Case>();
-                CaseSprite.x = i;
-                CaseSprite.y = j;
-                CaseSprite.HiddenCase = HiddenCase;
-                CaseSprite.MineCase = MineCase;
-                CaseSprite.ProxyMinesCaseSprite = ProxyMinesCaseSprite;
-                CaseSprite.MineSweeper = this;*/
             }
         }
     }
