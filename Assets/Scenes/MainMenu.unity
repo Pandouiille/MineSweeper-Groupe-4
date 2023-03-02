@@ -1027,7 +1027,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b398480ec9b7ab04d96bc85fdb11f94e, type: 3}
   - {fileID: 8300000, guid: 00dec30f93372ed4c919c1aed71cc341, type: 3}
   soundEffectMixer: {fileID: 24300002, guid: 9a1ba7f3a724d0a4bae9a75b64e19179, type: 2}
-  GameSound: {fileID: 8300000, guid: 00dec30f93372ed4c919c1aed71cc341, type: 3}
 --- !u!114 &217135785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4527,9 +4526,9 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: ToogleFullScreen
+      - m_Target: {fileID: 787253110}
+        m_TargetAssemblyTypeName: SetOptionGame, Assembly-CSharp
+        m_MethodName: PassIsTimer
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

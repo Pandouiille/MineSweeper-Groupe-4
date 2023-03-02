@@ -32,8 +32,6 @@ public class MineSweeper : MonoBehaviour
     private float clicktime = 0;
     private float clickdelay = 0.35f;
 
-    int _i, _j;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -41,11 +39,10 @@ public class MineSweeper : MonoBehaviour
         _NbMines = OptionGame.NbrMines;
         _NbMinesLeft = _NbMines;
         _audio = GetComponent<AudioSource>();
-        //Debug.Log($"{_GridSize} / {_NbMines} / {_NbMinesLeft}");
         InitGrid();
         PlaceMines();
         CreateSpriteGrid();
-
+        Debug.Log(OptionGame.IsTimer);
     }
 
     // Update is called once per frame
