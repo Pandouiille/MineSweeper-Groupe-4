@@ -1,4 +1,3 @@
-
 static public class OptionGame
 {
     private static int _nbrMines = 1;

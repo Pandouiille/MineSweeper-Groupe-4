@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MineSweeper : MonoBehaviour
 {
+    [SerializeField] GameObject _GameOverMenu;
+    [SerializeField] GameObject _WinMenu;
+
     [SerializeField] private int _GridSize;
     [SerializeField] private int _NbMines;
     [SerializeField] private int _NbMinesLeft;
@@ -30,13 +34,12 @@ public class MineSweeper : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
+    {        
         _GridSize = OptionGame.GridSize;
         _NbMines = OptionGame.NbrMines;
         _NbMinesLeft = _NbMines;
-        
         _audio = GetComponent<AudioSource>();
-        Debug.Log($"{_GridSize} / {_NbMines} / {_NbMinesLeft}");
+        //Debug.Log($"{_GridSize} / {_NbMines} / {_NbMinesLeft}");
         InitGrid();
         PlaceMines();
         CreateSpriteGrid();
@@ -50,7 +53,6 @@ public class MineSweeper : MonoBehaviour
         {
             return;
         }
-
         if (_GameOver && Input.GetMouseButtonDown(0))
         {
             _NbMinesLeft = _NbMines;
@@ -126,13 +128,15 @@ public class MineSweeper : MonoBehaviour
                     _GameOver = true;
                     DisplayMines();
                     _audio.PlayOneShot(_audioClip, 1);
-                    Debug.Log("Boom");
+                    SetPause(true);
+                    _GameOverMenu.SetActive(true);
                 }
                 else if (CaseIsSafe())
                 {
                     _GameOver = true;
                     DisplayMines();
-                    Debug.Log("GG");
+                    SetPause(true);
+                    _WinMenu.SetActive(true);
                 }
             }
         }
@@ -148,14 +152,14 @@ public class MineSweeper : MonoBehaviour
             {
                 PutFlagOnTile(x, y);
                 UpdateGrid();
-
                 if (CaseIsSafe())
                 {
                     _GameOver = true;
                     DisplayMines();
-                    Debug.Log("GG");
+                    SetPause(true);
+                    _WinMenu.SetActive(true);
                 }
-            }
+            }  
         }
     }
 
@@ -338,14 +342,14 @@ public class MineSweeper : MonoBehaviour
             {
                 ++_NbMinesLeft;
             }
-        }  
+        }
     }
 
     public void SetPause(bool pause)
     {
         _isPaused = pause;
     }
-    
+
     public int GetNbMinesLeft()
     {
         return _NbMinesLeft;

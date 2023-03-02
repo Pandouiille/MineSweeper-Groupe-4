@@ -1,8 +1,9 @@
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SetOptionGame : MonoBehaviour 
+public class SetOptionGame : MonoBehaviour
 {
 
     [SerializeField] private TextMeshProUGUI _gridSizeDisplay;
