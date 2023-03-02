@@ -24,6 +24,10 @@ public class MineSweeper : MonoBehaviour
     private bool _GameOver = true;
     private bool _isPaused = false;
 
+    private int clicked = 0;
+    private float clicktime = 0;
+    private float clickdelay = 0.35f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,6 +57,55 @@ public class MineSweeper : MonoBehaviour
             InitGrid();
             PlaceMines();
             UpdateGrid();
+        }
+
+        if (DoubleClick())
+        {
+            Vector3 MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            int x = Mathf.RoundToInt(MousePos.x);
+            int y = Mathf.RoundToInt(MousePos.y);
+
+            if (x >= 0 && x < _GridSize && y >= 0 && y < _GridSize && _RevealedCases[x, y])
+            {
+                int flagCounter = 0;
+                for (int i = x - 1; i <= x + 1; i++)
+                {
+                    for (int j = y - 1; j <= y + 1; j++)
+                    {
+                        if (_CasesWithFlags[i,j])
+                        {
+                            flagCounter += 1;
+                        }
+                    }
+                }
+
+                if (flagCounter == _Grid[x,y])
+                {
+                    for (int i = x - 1; i <= x + 1; i++)
+                    {
+                        for (int j = y - 1; j <= y + 1; j++)
+                        {
+                            RevealCase(i, j);
+                            if (_Grid[i, j] == -1 && !_CasesWithFlags[i,j])
+                            {
+                                _GameOver = true;
+                                DisplayMines();
+                                _audio.PlayOneShot(_audioClip, 1);
+                                Debug.Log("Boom");
+                            }
+                            else if (CaseIsSafe())
+                            {
+                                _GameOver = true;
+                                DisplayMines();
+                                Debug.Log("GG");
+                            }
+                        }
+                    }
+
+                    UpdateGrid();
+                }
+            }
         }
 
         if (!_GameOver && Input.GetMouseButtonDown(0)) 
@@ -193,7 +246,7 @@ public class MineSweeper : MonoBehaviour
         {
             for (int j = 0; j < _GridSize; j++)
             {
-                if (_CasesWithFlags[i, j] && !_GameOver)
+                if (_CasesWithFlags[i, j])
                 {
                     SpriteRenderer Render = GameObject.Find("Case_" + i + "_" + j).GetComponent<SpriteRenderer>();
                     Render.sprite = _FlagCase;
@@ -295,5 +348,22 @@ public class MineSweeper : MonoBehaviour
     public int GetNbMinesLeft()
     {
         return _NbMinesLeft;
+    }
+
+    bool DoubleClick()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            clicked++;
+            if (clicked == 1) clicktime = Time.time;
+        }
+        if (clicked > 1 && Time.time - clicktime < clickdelay)
+        {
+            clicked = 0;
+            clicktime = 0;
+            return true;
+        }
+        else if (clicked > 2 || Time.time - clicktime > 1) clicked = 0;
+        return false;
     }
 }
