@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class MineSweeper : MonoBehaviour
 {
+    [SerializeField] GameObject _GameOverMenu;
+    [SerializeField] GameObject _WinMenu;
+
     [SerializeField] private int _GridSize;
     [SerializeField] private int _NbMines;
     [SerializeField] private int _NbMinesLeft;
@@ -72,13 +75,15 @@ public class MineSweeper : MonoBehaviour
                     _GameOver = true;
                     DisplayMines();
                     _audio.PlayOneShot(_audioClip, 1);
-                    Debug.Log("Boom");
+                    SetPause(true);
+                    _GameOverMenu.SetActive(true);
                 }
                 else if (CaseIsSafe())
                 {
                     _GameOver = true;
                     DisplayMines();
-                    Debug.Log("GG");
+                    SetPause(true);
+                    _GameOverMenu.SetActive(true);
                 }
             }
         }
@@ -94,19 +99,12 @@ public class MineSweeper : MonoBehaviour
             {
                 PutFlagOnTile(x, y);
                 UpdateGrid();
-
-                if (x >= 0 && x < _GridSize && y >= 0 && y < _GridSize)
+                if (CaseIsSafe())
                 {
-                    Debug.Log("Pressed primary button.");
-                    PutFlagOnTile(x, y);
-                    UpdateGrid();
-
-                    if (CaseIsSafe())
-                    {
-                        _GameOver = true;
-                        DisplayMines();
-                        Debug.Log("GG");
-                    }
+                    _GameOver = true;
+                    DisplayMines();
+                    SetPause(true);
+                    _GameOverMenu.SetActive(true);
                 }
             }  
         }
@@ -300,7 +298,6 @@ public class MineSweeper : MonoBehaviour
                 ++_NbMinesLeft;
             }
         }
-        Debug.Log(_NbMinesLeft);     
     }
 
     public void SetPause(bool pause)
